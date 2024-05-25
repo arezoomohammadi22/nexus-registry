@@ -1,0 +1,36 @@
+version: '3.3'
+
+services:
+  nexus:
+    image: klo2k/nexus3
+    container_name: nexus
+    ports:
+      - "8081:8081"
+      - "5000:5000"
+    volumes:
+      - nexus-data:/nexus-data
+    environment:
+      - INSTALL4J_ADD_VM_PARAMS=-Xms1200m -Xmx1200m -XX:MaxDirectMemorySize=2g -Djava.util.prefs.userRoot=/nexus-data/javaprefs
+    networks:
+      - nexus-network
+
+  nginx:
+    image: nginx:latest
+    container_name: nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./registry.conf:/etc/nginx/conf.d/registry.conf
+      - ./certs/:/etc/ssl/
+    networks:
+      - nexus-network
+
+volumes:
+  nexus-data:
+    driver: local
+
+networks:
+  nexus-network:
+    driver: bridge
+

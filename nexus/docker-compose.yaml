@@ -1,5 +1,4 @@
 version: '3.3'
-
 services:
   nexus:
     image: klo2k/nexus3
@@ -13,7 +12,6 @@ services:
       - INSTALL4J_ADD_VM_PARAMS=-Xms1200m -Xmx1200m -XX:MaxDirectMemorySize=2g -Djava.util.prefs.userRoot=/nexus-data/javaprefs
     networks:
       - nexus-network
-
   nginx:
     image: nginx:latest
     container_name: nginx
@@ -25,11 +23,9 @@ services:
       - ./certs/:/etc/ssl/
     networks:
       - nexus-network
-
 volumes:
   nexus-data:
     driver: local
-
 networks:
   nexus-network:
     driver: bridge
